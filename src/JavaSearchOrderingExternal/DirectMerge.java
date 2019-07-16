@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,8 +30,8 @@ public class DirectMerge {
     static void mezclaDirecta(File f) throws IOException {
         int longSec;
         int numReg;
-        File f1 = new File("ArchivoAux1.dat");
-        File f2 = new File("ArchivoAux2.dat");
+        File f1 = new File("DirectAux1.dat");
+        File f2 = new File("DirectAux2.dat");
         /* número de registros se obtiene dividiendo el tamaño del archivo por el tamaño del registro: 4. */
         numReg = (int) f.length() / 4;
         longSec = 1;
@@ -48,7 +49,7 @@ public class DirectMerge {
         DataOutputStream flujo2 = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(f2)));
         numSec = numReg / (2 * longSec);
         resto = numReg % (2 * longSec);
-        //distribuye secuencias de longitud longSec 
+        // distribuye secuencias de longitud longSec 
         for (i = 1; i <= numSec; i++) {
             subSecuencia(flujo, flujo1, longSec);
             subSecuencia(flujo, flujo2, longSec);
@@ -84,10 +85,10 @@ public class DirectMerge {
         DataOutputStream flujo = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(f)));
         DataInputStream flujo1 = new DataInputStream(new BufferedInputStream(new FileInputStream(f1)));
         DataInputStream flujo2 = new DataInputStream(new BufferedInputStream(new FileInputStream(f2)));
-//claves iniciales 
+        //claves iniciales 
         clave1 = flujo1.readInt();
         clave2 = flujo2.readInt();
-//bucle para controlar todo el proceso de mezcla 
+        //bucle para controlar todo el proceso de mezcla 
         for (int s = 1; s <= numSec + 1; s++) {
             int n1, n2;
             n1 = n2 = lonSec;
@@ -119,9 +120,7 @@ public class DirectMerge {
                 }
                 flujo.writeInt(clave);
             }
-            /* 
-Los registros no procesados se escriben directamente 
-             */
+            /* Los registros no procesados se escriben directamente */
             for (k = i; k <= n1; k++) {
                 flujo.writeInt(clave1);
                 try {
@@ -141,57 +140,4 @@ Los registros no procesados se escriben directamente
         flujo1.close();
         flujo2.close();
     }
-
-    static void leer(File f) throws FileNotFoundException, IOException {
-        int clave, k;
-        boolean mas = true;
-        DataInputStream flujo = null;
-        try {
-            flujo = new DataInputStream(
-                    new BufferedInputStream(new FileInputStream(f)));
-            k = 0;
-            System.out.println("ARCHIVO DE CLAVES TIPO INT");
-            while (mas) {
-                k++;
-                System.out.print(flujo.readInt() + " ");
-                if (k % 11 == 0) {
-                    System.out.println();
-                }
-            }
-
-        } catch (EOFException eof) {
-            System.out.println("n *** Fin del archivo ***n");
-            try {
-                flujo.close();
-            } catch (IOException er) {
-                er.printStackTrace();
-            }
-        }
-    }
-
-    public static void crearAtchivo(File Ffichero) throws IOException {
-        // crear un objeto de tipo archivo 
-        DataOutputStream archivo = null;
-        // creando e inicializando los campos del registro 
-        // observar que se debe usar clases numericas apropiadas 
-        int clave = 0;
-        String nombre = new String("");
-        int edad = 0;
-        // creando objeto teclado 
-        BufferedReader teclado = new BufferedReader(new InputStreamReader(System.in));
-        // abriendo archivo, capturando y grabando datos 
-        try {
-            //* Creando y grabando a un archivo, esta larga la instrucción*/ 
-            archivo = new DataOutputStream(new FileOutputStream(Ffichero, true));
-            System.out.println("dame clave: ");
-            clave = Integer.parseInt(teclado.readLine());
-            //grabando al archivo 
-            archivo.writeInt(clave);
-            archivo.close();
-        } catch (FileNotFoundException fnfe) {
-            /* Archivo no encontrado */
-        }
-        /* Error al escribir */
-    }
-
 }

@@ -291,13 +291,8 @@ public class NaturalMerge {
     }
 
     public void ordenar(String nombreArchivo) {
-        /*No es recomendable utilizar nombres fijos para los archivos,
-     *pues se podria sobreescribir accidentalmente otro archivo con
-     *el mismo nombre, sin embargo, para fines de este proyecto
-     *se utilizaron nombres fijos
-         */
         int index = 0;
-        while (particion(nombreArchivo, "archivo1.txt", "archivo2.txt")) {
+        while (particion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat")) {
             //Imprime el numero de particiones-fusiones que le llevo a los
             //metodos de particion y fusion el ordenar el archivo
             System.out.println("Fusion " + ++index);
