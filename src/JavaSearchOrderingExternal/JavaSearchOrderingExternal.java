@@ -8,8 +8,10 @@ package JavaSearchOrderingExternal;
 import static JavaSearchOrderingExternal.Data.CreateFile;
 import static JavaSearchOrderingExternal.Data.ShowData;
 import static JavaSearchOrderingExternal.DirectMerge.mezclaDirecta;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import javax.swing.JOptionPane;
 
 /**
@@ -41,7 +43,11 @@ public class JavaSearchOrderingExternal {
                         mezclaDirecta(f);
                         System.out.println("Datos ordenados exitosamente");
                     case 4:
-                        System.out.println("...");
+                        NaturalMerge natural = new NaturalMerge();
+                        // mezcla1.desplegar("DirectMerge.dat");
+                        natural.ordenar("DirectMerge.dat");
+                        System.out.println("Datos ordenados exitosamente");
+                        //mezcla1.verificarOrdenamiento("DirectMerge.dat");
                         break;
                     case 0:
                         break;
@@ -53,19 +59,5 @@ public class JavaSearchOrderingExternal {
                 break;
             }
         } while(option != 0);
-
-//        InputStreamReader isr = new InputStreamReader(System.in);
-//        BufferedReader br = new BufferedReader(isr);
-//        String nombreArchivo = null;
-//        NaturalMerge mezcla1 = new NaturalMerge();
-//        //Solicita el nombre de un archivo para poder ordenarlo
-//        System.out.println("Nombre del archivo:");
-//        nombreArchivo = br.readLine();
-//        //Despliega el contenido del archivo sin ordenar
-//        mezcla1.desplegar(nombreArchivo);
-//        //Ordena el contenido del archivo
-//        mezcla1.ordenar(nombreArchivo);
-//        //Verifica que el archivo este ordenado correctamente
-//        mezcla1.verificarOrdenamiento(nombreArchivo);
     }
 }

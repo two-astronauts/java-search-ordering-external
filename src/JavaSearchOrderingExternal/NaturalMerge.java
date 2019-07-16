@@ -19,47 +19,17 @@ import java.io.InputStreamReader;
  * @author julianhenao
  */
 public class NaturalMerge {
-    InputStreamReader ISR = new InputStreamReader(System.in);
-    BufferedReader BR = new BufferedReader(ISR);
-
-    public void crearArchivoDatos(String nombreArchivo) throws Exception {
-        String nombre = null;
-        //Declaración del objeto asociado a la creación o apertura de un archivo
-        DataOutputStream dos = null;
-        //El siguiente código abre o crea un archivo
-        try {
-            dos = new DataOutputStream(new FileOutputStream(nombreArchivo, false));
-        } catch (IOException e) {
-            System.out.println("Error de Apertura o Creacion");
-        }
-        //El siguiente bloque escribe un registro en el archivo abierto o creado
-        try {
-            do {
-                System.out.println("Nombre: [Solo presiona Enter para terminar de capturar nombres]");
-                nombre = BR.readLine();
-                if (!nombre.equalsIgnoreCase("")) {
-                    dos.writeUTF(nombre);
-                }
-
-            } while (!nombre.equalsIgnoreCase(""));
-        } catch (IOException e) {
-            System.out.println("Error de escritura");
-        } finally {
-            dos.close();
-        }
-    }
 
     //Metodo para desplegar el contenido del archivo que se creó o se abrió en las líneas anteriores
     public void desplegar(String nombreArchivo) throws Exception {
-        String nombre = null;
+        Integer number = null;
         DataInputStream dis = null;
         int index = 0;
-        //DataOutputStream dos = null;
         try {
             dis = new DataInputStream(new FileInputStream(nombreArchivo));
             while (dis.available() != 0) {
-                nombre = dis.readUTF();
-                System.out.println(++index + ") " + nombre);
+                number = dis.readInt();
+                System.out.println(++index + ") " + number);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
@@ -74,12 +44,11 @@ public class NaturalMerge {
 
     //Metodo para verificar el correcto orden en el archivo
     public void verificarOrdenamiento(String nombreArchivo) throws IOException {
-        String actual = null;
-        String anterior = null;
+        Integer actual = null;
+        Integer anterior = null;
         //Variable booleana para indicar el estado del archivo
         boolean estaOrdenado = true;
         DataInputStream dis = null;
-        //DataOutputStream dos = null;
         try {
             dis = new DataInputStream(new FileInputStream(nombreArchivo));
             //Ciclo para verificar el orden del archivo
@@ -88,7 +57,7 @@ public class NaturalMerge {
                 //En un primer momento los indices quedan a la par
                 anterior = actual;
                 //actual se encargara de ir "jalando" a anterior
-                actual = dis.readUTF();
+                actual = dis.readInt();
                 //En la segunda vuelta, el indice anterior ocupa la posicion
                 //del indice actual y a partir de aqui, el indice actual
                 //se despega del anterior
@@ -126,8 +95,8 @@ public class NaturalMerge {
     public boolean particion(String nombreArchivo, String archivo1, String archivo2) {
         //Se utilizara una logica similar a la del metodo de verificar orden
         //por lo que los indices son declarados de la misma manera
-        String actual = null;
-        String anterior = null;
+        Integer actual = null;
+        Integer anterior = null;
         //Variable para controlar el indice del archivo al cual se va a escribir.
         //El archivo en cuestion es declarado dentro de un arreglo de archivos
         int indexOutputStream = 0;
@@ -147,7 +116,7 @@ public class NaturalMerge {
                 //Utiliza la misma logica para las variables que almacenan los datos
                 //que en el metodo de la verificacion del orden
                 anterior = actual;
-                actual = dis.readUTF();
+                actual = dis.readInt();
                 if (anterior == null) {
                     anterior = actual;
                 }
@@ -160,7 +129,7 @@ public class NaturalMerge {
                 }
                 //Imprimir el dato contenido en actual y escribirlo en el archivo correspondiente
                 //System.out.println(indexOutputStream + ") "+ actual);
-                dos[indexOutputStream].writeUTF(actual);
+                dos[indexOutputStream].writeInt(actual);
             }
         } catch (FileNotFoundException e) {
             System.out.println("Error lectura/escritura");
@@ -191,8 +160,8 @@ public class NaturalMerge {
     public void fusion(String nombreArchivo, String archivo1, String archivo2) {
         //Variables para almacenar los datos de los archivos
         //que contienen las particiones
-        String[] actual = new String[2];
-        String[] anterior = new String[2];
+        Integer[] actual = new Integer[2];
+        Integer[] anterior = new Integer[2];
         boolean[] finArchivo = new boolean[2];
         int indexArchivo = 0;
         //Creacion de los objetos asociacos a los archivos
@@ -211,8 +180,8 @@ public class NaturalMerge {
             while (dis[0].available() != 0 && dis[1].available() != 0) {
                 // 1era vez: inicializar con la primera palabra de cada archivo
                 if (anterior[0] == null && anterior[1] == null) {
-                    anterior[0] = actual[0] = dis[0].readUTF();
-                    anterior[1] = actual[1] = dis[1].readUTF();
+                    anterior[0] = actual[0] = dis[0].readInt();
+                    anterior[1] = actual[1] = dis[1].readInt();
                 }
                 // al inicio del procesamiento de dos secuencias, anterior y
                 // actual apuntan a la primer palabra de cada secuencia.
@@ -222,12 +191,12 @@ public class NaturalMerge {
                 while (anterior[0].compareTo(actual[0]) <= 0
                         && anterior[1].compareTo(actual[1]) <= 0) {
                     indexArchivo = (actual[0].compareTo(actual[1]) <= 0) ? 0 : 1;
-                    dos.writeUTF(actual[indexArchivo]);
+                    dos.writeInt(actual[indexArchivo]);
                     anterior[indexArchivo] = actual[indexArchivo];
                     // salir del while cuando no haya datos, pero ya procesamos
                     // el ultimo nombre del archivo
                     if (dis[indexArchivo].available() != 0) {
-                        actual[indexArchivo] = dis[indexArchivo].readUTF();
+                        actual[indexArchivo] = dis[indexArchivo].readInt();
                     } else {
                         finArchivo[indexArchivo] = true;
                         break;
@@ -238,10 +207,10 @@ public class NaturalMerge {
                 // que purgar el otro archivo
                 indexArchivo = indexArchivo == 0 ? 1 : 0;
                 while (anterior[indexArchivo].compareTo(actual[indexArchivo]) <= 0) {
-                    dos.writeUTF(actual[indexArchivo]);
+                    dos.writeInt(actual[indexArchivo]);
                     anterior[indexArchivo] = actual[indexArchivo];
                     if (dis[indexArchivo].available() != 0) {
-                        actual[indexArchivo] = dis[indexArchivo].readUTF();
+                        actual[indexArchivo] = dis[indexArchivo].readInt();
                     } else {
                         finArchivo[indexArchivo] = true;
                         break;
@@ -254,15 +223,15 @@ public class NaturalMerge {
             // debio terminar, por lo que a lo mas uno de los dos whiles
             // siguientes se ejecutara
             if (!finArchivo[0]) {
-                dos.writeUTF(actual[0]);
+                dos.writeInt(actual[0]);
                 while (dis[0].available() != 0) {
-                    dos.writeUTF(dis[0].readUTF());
+                    dos.writeInt(dis[0].readInt());
                 }
             }
             if (!finArchivo[1]) {
-                dos.writeUTF(actual[1]);
+                dos.writeInt(actual[1]);
                 while (dis[1].available() != 0) {
-                    dos.writeUTF(dis[1].readUTF());
+                    dos.writeInt(dis[1].readInt());
                 }
             }
         } catch (FileNotFoundException e) {
@@ -296,7 +265,7 @@ public class NaturalMerge {
             //Imprime el numero de particiones-fusiones que le llevo a los
             //metodos de particion y fusion el ordenar el archivo
             System.out.println("Fusion " + ++index);
-            fusion(nombreArchivo, "archivo1.txt", "archivo2.txt");
+            fusion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat");
         }
     }
 }
