@@ -52,8 +52,6 @@ public class Data {
         // creando e inicializando los campos del registro 
         // observar que se debe usar clases numericas apropiadas 
         int clave = 0;
-        String nombre = new String("");
-        int edad = 0;
         // abriendo archivo, capturando y grabando datos 
         try {
             /* Creando y grabando a un archivo, esta larga la instrucción*/ 

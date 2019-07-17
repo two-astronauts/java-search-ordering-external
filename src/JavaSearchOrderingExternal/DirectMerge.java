@@ -23,7 +23,7 @@ import java.io.IOException;
  */
 public class DirectMerge {
 
-    static void mezclaDirecta(File f) throws IOException {
+    public static void directMerge(File f) throws IOException {
         int longSec;
         int numReg;
         File f1 = new File("DirectAux1.dat");
@@ -38,7 +38,7 @@ public class DirectMerge {
         }
     }
 
-    static void distribuir(File f, File f1, File f2, int longSec, int numReg) throws IOException {
+    public static void distribuir(File f, File f1, File f2, int longSec, int numReg) throws IOException {
         int numSec, resto, i;
         DataInputStream flujo = new DataInputStream(new BufferedInputStream(new FileInputStream(f)));
         DataOutputStream flujo1 = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(f1)));
@@ -73,7 +73,7 @@ public class DirectMerge {
         }
     }
 
-    static void mezclar(File f1, File f2, File f,int lonSec, int numReg) throws IOException {
+    public static void mezclar(File f1, File f2, File f,int lonSec, int numReg) throws IOException {
         int numSec, resto, i, j, k;
         int clave1 = 0, clave2 = 0;
         numSec = numReg / (2 * lonSec); // número de subsecuencias 

@@ -9,7 +9,7 @@ package JavaSearchOrderingExternal;
  *
  * @author sala203
  */
-public class SearchMethods {
+public class SequentialSearch {
 
     public String sequentialSearch(int[] paramArray, int paramData) {
         String posicion = "";

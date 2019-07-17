@@ -5,89 +5,26 @@
  */
 package JavaSearchOrderingExternal;
 
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 /**
  *
  * @author julianhenao
  */
 public class NaturalMerge {
-
-    //Metodo para desplegar el contenido del archivo que se creó o se abrió en las líneas anteriores
-    public void desplegar(String nombreArchivo) throws Exception {
-        Integer number = null;
-        DataInputStream dis = null;
+    
+    public void naturalMerge(String nombreArchivo) {
         int index = 0;
-        try {
-            dis = new DataInputStream(new FileInputStream(nombreArchivo));
-            while (dis.available() != 0) {
-                number = dis.readInt();
-                System.out.println(++index + ") " + number);
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
-        } catch (IOException e) {
-            System.out.println("Error de lectura archivo: " + nombreArchivo);
-        } finally {
-            if (dis != null) {
-                dis.close();
-            }
-        }
-    }
-
-    //Metodo para verificar el correcto orden en el archivo
-    public void verificarOrdenamiento(String nombreArchivo) throws IOException {
-        Integer actual = null;
-        Integer anterior = null;
-        //Variable booleana para indicar el estado del archivo
-        boolean estaOrdenado = true;
-        DataInputStream dis = null;
-        try {
-            dis = new DataInputStream(new FileInputStream(nombreArchivo));
-            //Ciclo para verificar el orden del archivo
-            //Comenzar siempre por averiguar si hay datos dentro del archivo
-            while (dis.available() != 0) {
-                //En un primer momento los indices quedan a la par
-                anterior = actual;
-                //actual se encargara de ir "jalando" a anterior
-                actual = dis.readInt();
-                //En la segunda vuelta, el indice anterior ocupa la posicion
-                //del indice actual y a partir de aqui, el indice actual
-                //se despega del anterior
-                if (anterior == null) {
-                    anterior = actual;
-                }
-                System.out.println(actual);
-                //Comparacion de los datos contenidos en actual y anterior
-                //Condicion: Si el dato anterior es lexicograficamente mayor al actual
-                if (anterior.compareTo(actual) > 0) {
-                    System.out.println("Error en el ordenamiento");
-                    //Actualizacion de la variable booleana que indica el estado del archivo
-                    estaOrdenado = false;
-                    //Interrupcion del ciclo
-                    break;
-                }
-            }
-            //Si la variable booleana conservo su valor original de true, desplegar un mensaje
-            if (estaOrdenado) {
-                System.out.println("EL ARCHIVO ESTA ORDENADO");
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Error de Apertura-Lectura archivo: " + nombreArchivo);
-        } catch (IOException e) {
-            System.out.println("Error de lectura archivo: " + nombreArchivo);
-        } finally {
-            //Verificar siempre que el archivo este abierto antes de intentar cerrarlo
-            if (dis != null) {
-                dis.close();
-            }
+        while (particion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat")) {
+            //Imprime el numero de particiones-fusiones que le llevo a los
+            //metodos de particion y fusion el ordenar el archivo
+            System.out.println("Fusion " + ++index);
+            fusion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat");
         }
     }
 
@@ -256,16 +193,6 @@ public class NaturalMerge {
             } catch (IOException ex) {
                 System.out.println("Error al cerrar archivos");
             }
-        }
-    }
-
-    public void ordenar(String nombreArchivo) {
-        int index = 0;
-        while (particion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat")) {
-            //Imprime el numero de particiones-fusiones que le llevo a los
-            //metodos de particion y fusion el ordenar el archivo
-            System.out.println("Fusion " + ++index);
-            fusion(nombreArchivo, "DirectAux1.dat", "DirectAux2.dat");
         }
     }
 }
