@@ -65,4 +65,29 @@ public class Data {
         }
         /* Error al escribir */
     }
+    
+    public static int[] returnArray(String paramNombreArchivo) throws FileNotFoundException, IOException {
+        String data = "";
+        String[] array = null;
+        int[] arrayConvert = null;
+        
+        try (DataInputStream dis = new DataInputStream(new FileInputStream(paramNombreArchivo))) {
+            while (dis.available() != 0) {
+                data = data.concat(dis.readInt() + "_");
+            }
+            if (!"".equals(data)) {
+                data = data.substring(0, data.length() - 1);
+                array = data.split("_");
+                arrayConvert = new int[array.length];
+                for (int i = 0; i < array.length; i++) {
+                    arrayConvert[i] = Integer.parseInt(array[i]);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error de Apertura-Lectura archivo: " + paramNombreArchivo);
+        } catch (IOException e) {
+            System.out.println("Error de lectura archivo: " + paramNombreArchivo);
+        }
+        return arrayConvert;
+    }
 }

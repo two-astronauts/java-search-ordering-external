@@ -7,11 +7,13 @@ package JavaSearchOrderingExternal;
 
 import static JavaSearchOrderingExternal.Data.CreateFile;
 import static JavaSearchOrderingExternal.Data.ShowData;
+import static JavaSearchOrderingExternal.Data.returnArray;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 import javax.swing.JOptionPane;
 
 /**
@@ -27,8 +29,11 @@ public class JavaSearchOrderingExternal {
         File f = new File("DirectMerge.dat");
         int option = 0;
         int error = 0;
+        int numero = 0;
+        int[] arrayOrdenado = null;
         String menu = "MENU\n1.Agregar número\n2.Mostrar\n3.Ordenar por mezcla Directa\n4.Ordenar por mezcla Natural"
-            + "\n5.Verificar ordenamiento\n6.Busqueda secuencial\n0.Salir\nDigite la opcion";
+            + "\n5.Verificar ordenamiento\n6.Búsqueda secuencial\n7.Búsqueda por transformación de claves"
+            + "\n0.Salir\nDigite la opcion";
         do{
             try{
                 option = Integer.parseInt(JOptionPane.showInputDialog(menu));
@@ -68,7 +73,7 @@ public class JavaSearchOrderingExternal {
                         }
                         break;
                     case 6:
-                        int numero = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número a buscar"));
+                        numero = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número a buscar"));
                         error = verificarOrdenamiento("DirectMerge.dat");
                         if(error == 1) {
                             SequentialSearch sequential = new SequentialSearch();
@@ -77,6 +82,27 @@ public class JavaSearchOrderingExternal {
                             }else{
                                 System.out.println("No se encontró el número");
                             }
+                        }else if(error == 0) {
+                            System.out.println("El archivo no esta ordenado");
+                        }
+                        break;
+                    case 7:
+                        numero = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número a buscar"));
+                        error = verificarOrdenamiento("DirectMerge.dat");
+                        if(error == 1) {
+                            HashMapSearch hashMapSearch = new HashMapSearch();
+                            arrayOrdenado = returnArray("DirectMerge.dat");
+                            int[] arrayHash = new int[arrayOrdenado.length];
+                            Arrays.fill(arrayHash, -1);
+                            hashMapSearch.hashMap(arrayOrdenado, arrayHash);
+                            hashMapSearch.show(arrayHash);
+                            hashMapSearch.search(arrayHash, numero);
+                            
+//                            if(sequential.sequentialSearch("DirectMerge.dat", numero)){
+//                                System.out.println("Se encontro el número");
+//                            }else{
+//                                System.out.println("No se encontró el número");
+//                            }
                         }else if(error == 0) {
                             System.out.println("El archivo no esta ordenado");
                         }
