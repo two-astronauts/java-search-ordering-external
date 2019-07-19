@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 public class Data {
 
     static void ShowData(File f) throws FileNotFoundException, IOException {
-        int clave, k;
+        int k;
         boolean mas = true;
         DataInputStream flujo = null;
         try {

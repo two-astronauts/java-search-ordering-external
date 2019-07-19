@@ -28,7 +28,7 @@ public class JavaSearchOrderingExternal {
         int option = 0;
         int error = 0;
         String menu = "MENU\n1.Agregar número\n2.Mostrar\n3.Ordenar por mezcla Directa\n4.Ordenar por mezcla Natural"
-            + "\n5.Verificar ordenamiento\n0.Salir\nDigite la opcion";
+            + "\n5.Verificar ordenamiento\n6.Busqueda secuencial\n0.Salir\nDigite la opcion";
         do{
             try{
                 option = Integer.parseInt(JOptionPane.showInputDialog(menu));
@@ -63,6 +63,20 @@ public class JavaSearchOrderingExternal {
                         error = verificarOrdenamiento("DirectMerge.dat");
                         if(error == 1) {
                             System.out.println("El archivo esta ordenado");
+                        }else if(error == 0) {
+                            System.out.println("El archivo no esta ordenado");
+                        }
+                        break;
+                    case 6:
+                        int numero = Integer.parseInt(JOptionPane.showInputDialog("Ingrese el número a buscar"));
+                        error = verificarOrdenamiento("DirectMerge.dat");
+                        if(error == 1) {
+                            SequentialSearch sequential = new SequentialSearch();
+                            if(sequential.sequentialSearch("DirectMerge.dat", numero)){
+                                System.out.println("Se encontro el número");
+                            }else{
+                                System.out.println("No se encontró el número");
+                            }
                         }else if(error == 0) {
                             System.out.println("El archivo no esta ordenado");
                         }
