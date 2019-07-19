@@ -96,13 +96,12 @@ public class JavaSearchOrderingExternal {
                             Arrays.fill(arrayHash, -1);
                             hashMapSearch.hashMap(arrayOrdenado, arrayHash);
                             hashMapSearch.show(arrayHash);
-                            hashMapSearch.search(arrayHash, numero);
-                            
-//                            if(sequential.sequentialSearch("DirectMerge.dat", numero)){
-//                                System.out.println("Se encontro el número");
-//                            }else{
-//                                System.out.println("No se encontró el número");
-//                            }
+                            int encontro = hashMapSearch.search(arrayHash, numero);
+                            if(encontro != -1){
+                                System.out.println("Se encontro el número");
+                            }else{
+                                System.out.println("No se encontró el número");
+                            }
                         }else if(error == 0) {
                             System.out.println("El archivo no esta ordenado");
                         }
